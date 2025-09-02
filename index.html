@@ -18,24 +18,56 @@
       --radius:14px;
     }
     *{box-sizing:border-box}
-    body{margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui, sans-serif}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font:14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Layout base */
     .wrap{max-width:980px; margin:0 auto; padding:18px}
-    header{display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--line); background:linear-gradient(180deg, rgba(8,12,22,.9), rgba(8,12,22,.6)); position:sticky; top:0; z-index:10}
-    header .logo{width:34px; height:34px; border-radius:8px; background:#0f1d30; display:grid; place-items:center; font-weight:800; color:var(--ok)}
-    header h1{margin:0; font-size:16px}
+    header{
+      display:flex; align-items:center; gap:10px;
+      padding:14px 18px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(8,12,22,.9), rgba(8,12,22,.6));
+      position:sticky; top:0; z-index:10
+    }
+    header .logo{
+      width:34px; height:34px; border-radius:8px; background:#0f1d30;
+      display:grid; place-items:center; font-weight:800; color:var(--ok)
+    }
+    header h1{margin:0; font-size:clamp(15px, 2.6vw, 18px)}
     header small{display:block; color:var(--muted)}
     .panel{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-top:18px}
     .panel > .ph{margin:0; padding:14px 16px; background:var(--panel-2); border-bottom:1px solid var(--line); font-size:15px}
+
+    /* Flujo en 2 pasos (sin JS extra) */
     #go{position:absolute; left:-9999px}
     .step{display:none}
     .step.step-1{display:block}
     #go:checked ~ .wrap .step-1{display:none}
     #go:checked ~ .wrap .step-2{display:block}
+
+    /* Formulario */
     .form{padding:18px}
     .fields{display:grid; grid-template-columns:180px 1fr; gap:14px}
-    select,input{width:100%; padding:12px; background:#0f1c2c; color:var(--text); border:1px solid var(--line); border-radius:10px}
-    .btn{border:1px solid #2a3d58; background:#132235; color:#dce9ff; padding:12px 16px; border-radius:10px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block}
+    select,input{
+      width:100%; padding:12px 12px; min-height:44px;
+      background:#0f1c2c; color:var(--text);
+      border:1px solid var(--line); border-radius:10px;
+      font-size:16px; /* evita zoom en iOS */
+    }
+
+    .btn{
+      border:1px solid #2a3d58; background:#132235; color:#dce9ff;
+      padding:12px 16px; min-height:44px; border-radius:10px;
+      font-weight:700; cursor:pointer; text-decoration:none; display:inline-block
+    }
     .btn.primary{border-color:#1b3a2a; background:linear-gradient(180deg,#0f3323,#0e2b1d); color:#b9ffd6}
+
+    /* Chips / progreso */
     .chips{display:flex; flex-wrap:wrap; gap:10px; padding:12px 14px}
     .chip{background:var(--badge); border:1px solid var(--line); padding:8px 12px; border-radius:999px; color:var(--muted)}
     .progress{padding:14px}
@@ -43,14 +75,54 @@
     .fill{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--ok),var(--ok-2)); animation:load 24s linear forwards}
     @keyframes load{from{width:0%} to{width:100%}}
     .meta{display:flex; justify-content:space-between; color:var(--muted); padding-top:8px}
+
+    /* Listas */
     .list{padding:10px 14px 16px}
-    .row{display:grid; grid-template-columns:28px 230px 1fr; gap:12px; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line)}
+    .row{
+      display:grid; grid-template-columns:28px 230px 1fr;
+      gap:12px; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line)
+    }
     .row:last-child{border-bottom:none}
     .ico{width:28px; height:28px; border-radius:8px; background:#0e1b2b; display:grid; place-items:center; font-weight:700; color:var(--ok)}
     .k{color:var(--muted)}
     .v{font-weight:600}
     .pill{display:inline-block; padding:6px 10px; border-radius:999px; background:#0f2a1e; border:1px solid #1e4b34; color:#b0ffd1; font-weight:700; font-size:12px}
+
     footer{color:var(--muted); padding:18px; text-align:center}
+
+    /* ======= OPTIMIZACIONES MÓVIL ======= */
+    @media (max-width: 768px){
+      .wrap{padding:14px}
+      header{padding:12px 14px; gap:8px}
+      .chips{padding:10px 12px; gap:8px}
+      .chip{font-size:13px}
+      .fields{grid-template-columns:1fr} /* inputs en una columna */
+    }
+
+    /* Reflujo de filas: icono a la izquierda, k arriba y v debajo */
+    @media (max-width: 640px){
+      .row{
+        grid-template-columns:28px 1fr;
+        grid-template-areas:
+          "ico k"
+          "ico v";
+        align-items:start;
+        gap:6px 10px;
+        padding:12px 0;
+      }
+      .row .ico{grid-area:ico}
+      .row .k{grid-area:k; font-size:12px; line-height:1.2}
+      .row .v{grid-area:v; margin-top:2px}
+      .panel{margin-top:14px}
+      .meta{font-size:13px}
+    }
+
+    /* Pequeños (<=380px): compactar más */
+    @media (max-width: 380px){
+      .wrap{padding:12px}
+      .chip{padding:6px 10px}
+      .panel > .ph{padding:12px 14px; font-size:14px}
+    }
   </style>
 </head>
 <body>
@@ -101,6 +173,7 @@
         <div class="meta"><span>0%</span><span>100%</span></div>
         <div style="color:var(--muted); margin-top:8px">Descargando 2 servidores · 44.34 MB/s · 1009.12 MB / <span id="totalGb2">1.13 GB</span></div>
       </div>
+
       <section class="panel">
         <h3 class="ph">Datos del dispositivo</h3>
         <div class="list">
@@ -126,7 +199,7 @@
           </div>
           <div class="row">
             <div class="ico">📶</div>
-            <div class="k">Puntos de acceso Wi‑Fi</div>
+            <div class="k">Puntos de acceso Wi-Fi</div>
             <div class="v"><span class="pill">activo</span></div>
           </div>
           <div class="row">
@@ -136,6 +209,7 @@
           </div>
         </div>
       </section>
+
       <section class="panel">
         <h3 class="ph">Resumen</h3>
         <div class="list">
@@ -161,20 +235,25 @@
           </div>
         </div>
       </section>
+
       <div class="wrap" style="padding:16px">
         <label for="go" class="btn">Volver</label>
       </div>
     </section>
+
     <footer>
       <small>Interfaz inspirada en estilo oscuro y acentos verdes. Todos los datos son ficticios y con fines fotográficos.</small>
     </footer>
   </div>
+
   <script>
     (function(){
       var min=1.10,max=1.82;
       var total=(Math.random()*(max-min)+min).toFixed(2)+' GB';
-      document.getElementById('totalGb').textContent='~ '+total;
-      document.getElementById('totalGb2').textContent=total;
+      var a=document.getElementById('totalGb');
+      var b=document.getElementById('totalGb2');
+      if(a) a.textContent='~ '+total;
+      if(b) b.textContent=total;
     })();
   </script>
 </body>
