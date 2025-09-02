@@ -84,7 +84,12 @@
     .chip{background:var(--badge); border:1px solid var(--line); padding:8px 12px; border-radius:999px; color:var(--muted); white-space:nowrap}
     .progress{padding:14px}
     .bar{height:12px; background:#0b1626; border:1px solid var(--line); border-radius:999px; overflow:hidden}
-    .fill{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--ok),var(--ok-2)); animation:load 24s linear forwards}
+    /* <<< Cambio aquí: barra llena desde el inicio >>> */
+    .fill{
+      display:block; height:100%; width:100%;
+      background:linear-gradient(90deg,var(--ok),var(--ok-2));
+      animation:none;
+    }
     @keyframes load{from{width:0%} to{width:100%}}
     @media (prefers-reduced-motion: reduce){
       .fill{animation-duration:1ms}
@@ -274,14 +279,12 @@
       var endEl=document.getElementById('endTime');
       try{
         var now=new Date();
-        // Día
         if(todayEl){
           var fechaEC=new Intl.DateTimeFormat('es-EC',{
             timeZone:tz, day:'2-digit', month:'long', year:'numeric'
           }).format(now);
           todayEl.textContent=fechaEC;
         }
-        // Hora (HH:mm)
         if(endEl){
           var horaEC=new Intl.DateTimeFormat('es-EC',{
             timeZone:tz, hour:'2-digit', minute:'2-digit', hour12:false
