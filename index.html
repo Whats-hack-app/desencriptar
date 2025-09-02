@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel — Simulación fotográfica (HTML + CSS)</title>
+  <style>
+    :root{
+      --bg:#0c1420;
+      --panel:#182434;
+      --panel-2:#1e2c3f;
+      --line:#22344c;
+      --text:#e8f0ff;
+      --muted:#a9bbd6;
+      --ok:#2bd67b;
+      --ok-2:#7de38f;
+      --badge:#0f1b2c;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui, sans-serif}
+    .wrap{max-width:980px; margin:0 auto; padding:18px}
+    header{display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--line); background:linear-gradient(180deg, rgba(8,12,22,.9), rgba(8,12,22,.6)); position:sticky; top:0; z-index:10}
+    header .logo{width:34px; height:34px; border-radius:8px; background:#0f1d30; display:grid; place-items:center; font-weight:800; color:var(--ok)}
+    header h1{margin:0; font-size:16px}
+    header small{display:block; color:var(--muted)}
+    .panel{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-top:18px}
+    .panel > .ph{margin:0; padding:14px 16px; background:var(--panel-2); border-bottom:1px solid var(--line); font-size:15px}
+    #go{position:absolute; left:-9999px}
+    .step{display:none}
+    .step.step-1{display:block}
+    #go:checked ~ .wrap .step-1{display:none}
+    #go:checked ~ .wrap .step-2{display:block}
+    .form{padding:18px}
+    .fields{display:grid; grid-template-columns:180px 1fr; gap:14px}
+    select,input{width:100%; padding:12px; background:#0f1c2c; color:var(--text); border:1px solid var(--line); border-radius:10px}
+    .btn{border:1px solid #2a3d58; background:#132235; color:#dce9ff; padding:12px 16px; border-radius:10px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block}
+    .btn.primary{border-color:#1b3a2a; background:linear-gradient(180deg,#0f3323,#0e2b1d); color:#b9ffd6}
+    .chips{display:flex; flex-wrap:wrap; gap:10px; padding:12px 14px}
+    .chip{background:var(--badge); border:1px solid var(--line); padding:8px 12px; border-radius:999px; color:var(--muted)}
+    .progress{padding:14px}
+    .bar{height:12px; background:#0b1626; border:1px solid var(--line); border-radius:999px; overflow:hidden}
+    .fill{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--ok),var(--ok-2)); animation:load 24s linear forwards}
+    @keyframes load{from{width:0%} to{width:100%}}
+    .meta{display:flex; justify-content:space-between; color:var(--muted); padding-top:8px}
+    .list{padding:10px 14px 16px}
+    .row{display:grid; grid-template-columns:28px 230px 1fr; gap:12px; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line)}
+    .row:last-child{border-bottom:none}
+    .ico{width:28px; height:28px; border-radius:8px; background:#0e1b2b; display:grid; place-items:center; font-weight:700; color:var(--ok)}
+    .k{color:var(--muted)}
+    .v{font-weight:600}
+    .pill{display:inline-block; padding:6px 10px; border-radius:999px; background:#0f2a1e; border:1px solid #1e4b34; color:#b0ffd1; font-weight:700; font-size:12px}
+    footer{color:var(--muted); padding:18px; text-align:center}
+  </style>
+</head>
+<body>
+  <input type="checkbox" id="go" />
+  <header>
+    <div class="logo">W</div>
+    <div>
+      <h1>WA — Panel de simulación</h1>
+      <small>Solo para fines fotográficos. No realiza acciones reales.</small>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="panel step step-1">
+      <h2 class="ph">Ingresar número</h2>
+      <div class="form">
+        <div class="fields">
+          <div>
+            <label for="cc">Código de país</label>
+            <select id="cc">
+              <option value="593">🇪🇨 +593 — Ecuador</option>
+              <option value="57">🇨🇴 +57 — Colombia</option>
+              <option value="52">🇲🇽 +52 — México</option>
+              <option value="54">🇦🇷 +54 — Argentina</option>
+              <option value="34">🇪🇸 +34 — España</option>
+            </select>
+          </div>
+          <div>
+            <label for="num">Número</label>
+            <input id="num" type="tel" placeholder="Ej: 93991238526" />
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <label for="go" class="btn primary">Continuar</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel step step-2">
+      <h2 class="ph">Búsqueda de dispositivos — Simulación</h2>
+      <div class="chips">
+        <span class="chip">Hoy: 02 de septiembre de 2025</span>
+        <span class="chip">Identificación: eb93f4df0358740685706d448c7d518d</span>
+      </div>
+      <div class="progress">
+        <div style="color:var(--muted); margin-bottom:8px">Subir datos extraídos a su Panel de Control % MARCA</div>
+        <div class="bar"><span class="fill"></span></div>
+        <div class="meta"><span>0%</span><span>100%</span></div>
+        <div style="color:var(--muted); margin-top:8px">Descargando 2 servidores · 44.34 MB/s · 1009.12 MB / <span id="totalGb2">1.13 GB</span></div>
+      </div>
+      <section class="panel">
+        <h3 class="ph">Datos del dispositivo</h3>
+        <div class="list">
+          <div class="row">
+            <div class="ico">WA</div>
+            <div class="k">Número</div>
+            <div class="v">+593 93991238526</div>
+          </div>
+          <div class="row">
+            <div class="ico">🌍</div>
+            <div class="k">País</div>
+            <div class="v">🇪🇨 Ecuador</div>
+          </div>
+          <div class="row">
+            <div class="ico">✉️</div>
+            <div class="k">Mensajes entrantes y salientes</div>
+            <div class="v">531 MB</div>
+          </div>
+          <div class="row">
+            <div class="ico">📁</div>
+            <div class="k">Archivos de fotos y videos</div>
+            <div class="v">621 MB</div>
+          </div>
+          <div class="row">
+            <div class="ico">📶</div>
+            <div class="k">Puntos de acceso Wi‑Fi</div>
+            <div class="v"><span class="pill">activo</span></div>
+          </div>
+          <div class="row">
+            <div class="ico">#</div>
+            <div class="k">Dirección MSC/VLR</div>
+            <div class="v">26225228414280</div>
+          </div>
+        </div>
+      </section>
+      <section class="panel">
+        <h3 class="ph">Resumen</h3>
+        <div class="list">
+          <div class="row">
+            <div class="ico">💾</div>
+            <div class="k">Total descargado</div>
+            <div class="v" id="totalGb">~ 1.13 GB</div>
+          </div>
+          <div class="row">
+            <div class="ico">⚡</div>
+            <div class="k">Velocidad media</div>
+            <div class="v">44.34 MB/s</div>
+          </div>
+          <div class="row">
+            <div class="ico">⏱️</div>
+            <div class="k">Tiempo de actividad</div>
+            <div class="v">00:19:32</div>
+          </div>
+          <div class="row">
+            <div class="ico">✔️</div>
+            <div class="k">Estado</div>
+            <div class="v"><span class="pill">OK</span></div>
+          </div>
+        </div>
+      </section>
+      <div class="wrap" style="padding:16px">
+        <label for="go" class="btn">Volver</label>
+      </div>
+    </section>
+    <footer>
+      <small>Interfaz inspirada en estilo oscuro y acentos verdes. Todos los datos son ficticios y con fines fotográficos.</small>
+    </footer>
+  </div>
+  <script>
+    (function(){
+      var min=1.10,max=1.82;
+      var total=(Math.random()*(max-min)+min).toFixed(2)+' GB';
+      document.getElementById('totalGb').textContent='~ '+total;
+      document.getElementById('totalGb2').textContent=total;
+    })();
+  </script>
+</body>
+</html>
